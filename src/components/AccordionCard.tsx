@@ -23,42 +23,67 @@ export default function AccordionCard({
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const chevronRef = useRef<SVGSVGElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const { isWireframe } = useTheme();
 
   const toggle = useCallback(() => {
     const content = contentRef.current;
     const chevron = chevronRef.current;
+    const img = imageRef.current;
     if (!content || !chevron) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!isExpanded) {
       gsap.set(content, { height: 'auto' });
       const fullHeight = content.offsetHeight;
       gsap.set(content, { height: 0 });
 
-      gsap.to(content, {
-        height: fullHeight,
-        duration: 0.4,
-        ease: 'power2.out',
-      });
-      gsap.to(chevron, {
-        rotation: 90,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
+      if (prefersReducedMotion) {
+        gsap.set(content, { height: fullHeight });
+        gsap.set(chevron, { rotation: 90 });
+      } else {
+        // Silky smooth height expansion
+        gsap.to(content, {
+          height: fullHeight,
+          duration: 0.6,
+          ease: 'power3.inOut',
+        });
+        gsap.to(chevron, {
+          rotation: 90,
+          duration: 0.4,
+          ease: 'power3.out',
+        });
+        
+        // Micro-interaction: image zoom-out
+        if (img && !isWireframe) {
+          gsap.fromTo(
+            img,
+            { scale: 1.1 },
+            { scale: 1, duration: 0.6, ease: 'power2.out' }
+          );
+        }
+      }
     } else {
-      gsap.to(content, {
-        height: 0,
-        duration: 0.3,
-        ease: 'power2.in',
-      });
-      gsap.to(chevron, {
-        rotation: 0,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
+      if (prefersReducedMotion) {
+        gsap.set(content, { height: 0 });
+        gsap.set(chevron, { rotation: 0 });
+      } else {
+        // Smooth collapse
+        gsap.to(content, {
+          height: 0,
+          duration: 0.5,
+          ease: 'power3.inOut',
+        });
+        gsap.to(chevron, {
+          rotation: 0,
+          duration: 0.4,
+          ease: 'power3.out',
+        });
+      }
     }
     setIsExpanded(!isExpanded);
-  }, [isExpanded]);
+  }, [isExpanded, isWireframe]);
 
   return (
     <div
@@ -77,10 +102,11 @@ export default function AccordionCard({
         style={{ height: '260px' }}
       >
         <img
+          ref={imageRef}
           src={image}
           alt={imageAlt}
-          className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-          style={{ opacity: isWireframe ? 0 : 0.85 }}
+          className="w-full h-full object-cover transition-transform duration-700"
+          style={{ opacity: isWireframe ? 0 : 0.85, willChange: 'transform' }}
           loading="lazy"
         />
         <span className="wireframe-label">{imageAlt}</span>

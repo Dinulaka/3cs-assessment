@@ -24,7 +24,7 @@ export default function MethodologySection() {
           marginRight: 'auto',
         }}
       >
-        <ScrollReveal>
+        <ScrollReveal direction="right">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Left Interactive Card Column (Alternating for visual harmony) */}
             <div className="lg:col-span-7">

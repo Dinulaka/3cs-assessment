@@ -20,22 +20,23 @@ export default function SplitTextReveal({
     const el = containerRef.current;
     if (!el) return;
 
+    const chars = el.querySelectorAll('.split-char');
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
 
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion) {
+      gsap.set(chars, { y: '0%', opacity: 1 });
+      return;
+    }
 
-    const chars = el.querySelectorAll('.split-char');
-
-    gsap.set(chars, { y: 80, opacity: 0, rotateX: -40 });
+    // Push characters down outside of their overflow-hidden mask
+    gsap.set(chars, { y: '100%' });
 
     const tween = gsap.to(chars, {
-      y: 0,
-      opacity: 1,
-      rotateX: 0,
-      duration: 0.8,
-      stagger: 0.03,
+      y: '0%',
+      duration: 1.2,
+      stagger: 0.05,
       delay,
       ease: 'power4.out',
     });
@@ -51,25 +52,35 @@ export default function SplitTextReveal({
     <Tag
       ref={containerRef as React.RefObject<any>}
       className={`char-reveal ${className}`}
-      style={{ perspective: '600px' }}
     >
       {words.map((word, wordIndex) => (
         <span key={wordIndex} style={{ display: 'inline-block', whiteSpace: 'pre' }}>
           {word.split('').map((char, charIndex) => (
             <span
               key={`${wordIndex}-${charIndex}`}
-              className="split-char"
+              className="split-char-mask"
               style={{
                 display: 'inline-block',
-                willChange: 'transform, opacity',
+                overflow: 'hidden', // The masking effect
+                verticalAlign: 'bottom',
               }}
             >
-              {char}
+              <span
+                className="split-char"
+                style={{
+                  display: 'inline-block',
+                  willChange: 'transform',
+                }}
+              >
+                {char}
+              </span>
             </span>
           ))}
           {wordIndex < words.length - 1 && (
-            <span className="split-char" style={{ display: 'inline-block' }}>
-              &nbsp;
+            <span className="split-char-mask" style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom' }}>
+              <span className="split-char" style={{ display: 'inline-block' }}>
+                &nbsp;
+              </span>
             </span>
           )}
         </span>

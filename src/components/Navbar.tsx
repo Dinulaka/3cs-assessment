@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeProvider';
 import { Menu, X } from 'lucide-react';
+import gsap from 'gsap';
 
 const NAV_LINKS = [
   { label: 'About', href: '#intro' },
@@ -13,12 +14,30 @@ export default function Navbar() {
   const { isWireframe } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Initial Load Animation
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      if (navRef.current) {
+        gsap.set(navRef.current, { y: 0, opacity: 1 });
+      }
+    } else {
+      if (navRef.current) {
+        gsap.fromTo(
+          navRef.current,
+          { y: -20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
+        );
+      }
+    }
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -33,8 +52,10 @@ export default function Navbar() {
   return (
     <nav
       id="main-nav"
+      ref={navRef}
       className="fixed top-0 left-0 right-0 z-40 transition-all duration-500"
       style={{
+        opacity: 0, // GSAP will handle showing it
         background: isWireframe
           ? 'transparent'
           : isScrolled

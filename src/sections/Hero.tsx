@@ -6,6 +6,7 @@ import gsap from 'gsap';
 
 export default function Hero() {
   const { isWireframe } = useTheme();
+  const overlineRef = useRef<HTMLParagraphElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
@@ -14,25 +15,42 @@ export default function Hero() {
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
-    if (prefersReducedMotion) return;
 
-    const tl = gsap.timeline({ delay: 1.2 });
+    if (prefersReducedMotion) {
+      // Instantly show everything without animation
+      gsap.set([overlineRef.current, subtitleRef.current, ctaRef.current, arrowRef.current], {
+        opacity: 1,
+        y: 0,
+        skewY: 0,
+      });
+      return;
+    }
+
+    // SplitTextReveal uses delay: 0.5 and takes ~1.2s to finish (staggered). 
+    // It finishes around 1.7s.
+    const tl = gsap.timeline({ delay: 1.5 });
     
+    if (overlineRef.current) {
+      gsap.fromTo(overlineRef.current, { opacity: 0 }, { opacity: 1, duration: 0.8, delay: 0.5 });
+    }
+
     if (subtitleRef.current) {
       tl.fromTo(
         subtitleRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+        { opacity: 0, y: 30, skewY: 2 },
+        { opacity: 1, y: 0, skewY: 0, duration: 1, ease: 'power3.out' }
       );
     }
+    
     if (ctaRef.current) {
       tl.fromTo(
         ctaRef.current,
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-        '-=0.4'
+        '-=0.6'
       );
     }
+    
     if (arrowRef.current) {
       tl.fromTo(
         arrowRef.current,
@@ -87,6 +105,7 @@ export default function Hero() {
       >
         {/* Overline */}
         <p
+          ref={overlineRef}
           style={{
             fontSize: '0.75rem',
             textTransform: 'uppercase',
@@ -96,24 +115,19 @@ export default function Hero() {
             color: isWireframe ? '#777' : 'var(--color-accent)',
             opacity: 0,
           }}
-          ref={(el) => {
-            if (el) {
-              gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.6, delay: 0.2 });
-            }
-          }}
         >
           3CS Digital Agency
         </p>
 
-        {/* Main headline with SplitText */}
+        {/* Main headline with Masked SplitText */}
         <SplitTextReveal
           text="Engineered for the Apex"
           tag="h1"
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-none tracking-tight mb-8"
-          delay={0.5}
+          delay={0.6}
         />
 
-        {/* Subtitle - centered explicitly with inline styling to prevent left-heavy rendering */}
+        {/* Subtitle - centered explicitly, animated via timeline with un-skew */}
         <p
           ref={subtitleRef}
           style={{
