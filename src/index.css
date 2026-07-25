@@ -1,0 +1,292 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-charcoal: #0a0a0a;
+  --color-charcoal-light: #1a1a1a;
+  --color-charcoal-lighter: #2a2a2a;
+  --color-offwhite: #f5f5f5;
+  --color-offwhite-dim: #e0e0e0;
+  --color-accent: #dc2626;
+  --color-accent-dark: #b91c1c;
+  --color-accent-glow: #ef4444;
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+/* === BASE RESET === */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-charcoal);
+  color: var(--color-offwhite);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-charcoal);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-charcoal-lighter);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* === VIEW TRANSITIONS === */
+::view-transition-old(root) {
+  animation: 0.4s ease-in-out fade-and-scale-out;
+}
+::view-transition-new(root) {
+  animation: 0.4s ease-in-out fade-and-scale-in;
+}
+
+@keyframes fade-and-scale-out {
+  from {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  to {
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+@keyframes fade-and-scale-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* === WIREFRAME MODE === */
+body.wireframe {
+  font-family: var(--font-mono);
+  background-color: #ffffff;
+  color: #1a1a1a;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+body.wireframe * {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+body.wireframe h1,
+body.wireframe h2,
+body.wireframe h3,
+body.wireframe h4,
+body.wireframe h5,
+body.wireframe h6,
+body.wireframe p,
+body.wireframe span,
+body.wireframe a,
+body.wireframe button,
+body.wireframe li {
+  font-family: var(--font-mono) !important;
+}
+
+body.wireframe section {
+  border: 1px dashed #aaa !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+body.wireframe .wireframe-image {
+  background: #e5e5e5 !important;
+  border: 2px dashed #999 !important;
+  position: relative;
+  overflow: hidden;
+}
+
+body.wireframe .wireframe-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 1px),
+      #999 calc(50% - 1px),
+      #999 calc(50% + 1px),
+      transparent calc(50% + 1px)
+    ),
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 1px),
+      #999 calc(50% - 1px),
+      #999 calc(50% + 1px),
+      transparent calc(50% + 1px)
+    );
+}
+
+body.wireframe .wireframe-image img {
+  opacity: 0 !important;
+}
+
+body.wireframe .wireframe-image .wireframe-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  z-index: 2;
+  background: rgba(255,255,255,0.8);
+  padding: 4px 8px;
+}
+
+body.wireframe nav {
+  border-bottom: 2px dashed #333 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+}
+
+body.wireframe button {
+  border: 2px dashed #333 !important;
+  background: transparent !important;
+  color: #333 !important;
+}
+
+body.wireframe .gradient-text {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: #333 !important;
+  color: #333 !important;
+}
+
+body.wireframe .hero-bg {
+  background: #f0f0f0 !important;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 1px, transparent 1px) !important;
+  background-size: 40px 40px !important;
+}
+
+body.wireframe .hero-bg::before,
+body.wireframe .hero-bg::after {
+  display: none !important;
+}
+
+body.wireframe .glass-card {
+  background: #ffffff !important;
+  border: 2px dashed #aaa !important;
+  backdrop-filter: none !important;
+}
+
+body.wireframe .accent-line {
+  background: #333 !important;
+}
+
+body.wireframe footer {
+  border-top: 2px dashed #333 !important;
+  background: transparent !important;
+}
+
+/* === REALITY MODE UTILITIES === */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-offwhite), var(--color-accent-glow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.accent-line {
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+}
+
+.hero-bg {
+  background: radial-gradient(ellipse at 20% 50%, rgba(220, 38, 38, 0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(220, 38, 38, 0.08), transparent 50%),
+    var(--color-charcoal);
+  position: relative;
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(220, 38, 38, 0.06), transparent 40%);
+  pointer-events: none;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to top, var(--color-charcoal), transparent);
+  pointer-events: none;
+}
+
+/* === SELECTION === */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-offwhite);
+}
+
+body.wireframe ::selection {
+  background-color: #333;
+  color: #fff;
+}
+
+/* === CHARACTER REVEAL ANIMATION BASE === */
+.char-reveal {
+  display: inline-block;
+  overflow: hidden;
+}
+.char-reveal span {
+  display: inline-block;
+}
+
+/* === ACCORDION === */
+.accordion-content {
+  overflow: hidden;
+  height: 0;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
