@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, type ReactNode } from 'react';
+import { useRef, useState, useCallback, useEffect, type ReactNode } from 'react';
 import gsap from 'gsap';
 import { ChevronRight } from 'lucide-react';
 import { useTheme } from '../context/ThemeProvider';
@@ -25,6 +25,36 @@ export default function AccordionCard({
   const chevronRef = useRef<SVGSVGElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const { isWireframe } = useTheme();
+
+  useEffect(() => {
+    const img = imageRef.current;
+    if (!img) return;
+
+    // Set initial scale to allow room for parallax movement without showing edges
+    gsap.set(img, { scale: 1.2 });
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion || isWireframe) return;
+
+    const tween = gsap.fromTo(
+      img,
+      { y: '-10%' },
+      {
+        y: '10%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: img.parentElement,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        },
+      }
+    );
+
+    return () => {
+      tween.kill();
+    };
+  }, [isWireframe]);
 
   const toggle = useCallback(() => {
     const content = contentRef.current;
@@ -59,8 +89,8 @@ export default function AccordionCard({
         if (img && !isWireframe) {
           gsap.fromTo(
             img,
-            { scale: 1.1 },
-            { scale: 1, duration: 0.6, ease: 'power2.out' }
+            { scale: 1.3 }, // Adjusted for parallax base scale
+            { scale: 1.2, duration: 0.6, ease: 'power2.out' }
           );
         }
       }

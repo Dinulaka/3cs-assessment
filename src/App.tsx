@@ -11,6 +11,8 @@ import MethodologySection from './sections/MethodologySection';
 import ResultSection from './sections/ResultSection';
 import Footer from './sections/Footer';
 
+import CustomCursor from './components/CustomCursor';
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
@@ -34,6 +36,7 @@ export default function App() {
 
   return (
     <>
+      <CustomCursor />
       <Navbar />
       <ThemeToggle />
       <main style={{ overflowX: 'hidden' }}>

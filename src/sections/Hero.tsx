@@ -1,4 +1,5 @@
 import SplitTextReveal from '../components/SplitTextReveal';
+import MagneticButton from '../components/MagneticButton';
 import { useTheme } from '../context/ThemeProvider';
 import { ArrowDown } from 'lucide-react';
 import { useEffect, useRef } from 'react';
@@ -147,8 +148,8 @@ export default function Hero() {
         </p>
 
         {/* CTA Button Wrapper */}
-        <div
-          ref={ctaRef}
+        <MagneticButton
+          className="hero-cta-wrapper"
           style={{
             opacity: 0,
             display: 'flex',
@@ -156,44 +157,46 @@ export default function Hero() {
             margin: '0 auto',
           }}
         >
-          <button
-            onClick={() =>
-              document.querySelector('#intro')?.scrollIntoView({ behavior: 'smooth' })
-            }
-            style={{
-              padding: '1rem 2.25rem',
-              fontSize: '0.875rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              fontWeight: 800,
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              background: isWireframe ? 'transparent' : 'var(--color-accent)',
-              color: isWireframe ? '#1a1a1a' : '#fff',
-              border: isWireframe ? '2px dashed #333' : 'none',
-              borderRadius: isWireframe ? '0' : '999px',
-              boxShadow: isWireframe ? 'none' : '0 10px 30px -10px rgba(220, 38, 38, 0.5)',
-            }}
-            onMouseEnter={(e) => {
-              if (!isWireframe) {
-                (e.target as HTMLElement).style.transform = 'translateY(-2px) scale(1.03)';
-                (e.target as HTMLElement).style.boxShadow = '0 15px 35px -5px rgba(220, 38, 38, 0.7)';
-              } else {
-                (e.target as HTMLElement).style.background = '#f0f0f0';
+          <div ref={ctaRef}>
+            <button
+              onClick={() =>
+                document.querySelector('#intro')?.scrollIntoView({ behavior: 'smooth' })
               }
-            }}
-            onMouseLeave={(e) => {
-              if (!isWireframe) {
-                (e.target as HTMLElement).style.transform = 'translateY(0) scale(1)';
-                (e.target as HTMLElement).style.boxShadow = '0 10px 30px -10px rgba(220, 38, 38, 0.5)';
-              } else {
-                (e.target as HTMLElement).style.background = 'transparent';
-              }
-            }}
-          >
-            Enter the Funnel
-          </button>
-        </div>
+              style={{
+                padding: '1rem 2.25rem',
+                fontSize: '0.875rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                fontWeight: 800,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                background: isWireframe ? 'transparent' : 'var(--color-accent)',
+                color: isWireframe ? '#1a1a1a' : '#fff',
+                border: isWireframe ? '2px dashed #333' : 'none',
+                borderRadius: isWireframe ? '0' : '999px',
+                boxShadow: isWireframe ? 'none' : '0 10px 30px -10px rgba(220, 38, 38, 0.5)',
+              }}
+              onMouseEnter={(e) => {
+                if (!isWireframe) {
+                  (e.target as HTMLElement).style.transform = 'translateY(-2px) scale(1.03)';
+                  (e.target as HTMLElement).style.boxShadow = '0 15px 35px -5px rgba(220, 38, 38, 0.7)';
+                } else {
+                  (e.target as HTMLElement).style.background = '#f0f0f0';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isWireframe) {
+                  (e.target as HTMLElement).style.transform = 'translateY(0) scale(1)';
+                  (e.target as HTMLElement).style.boxShadow = '0 10px 30px -10px rgba(220, 38, 38, 0.5)';
+                } else {
+                  (e.target as HTMLElement).style.background = 'transparent';
+                }
+              }}
+            >
+              Enter the Funnel
+            </button>
+          </div>
+        </MagneticButton>
       </div>
 
       {/* Scroll indicator */}

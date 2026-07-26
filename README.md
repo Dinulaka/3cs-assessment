@@ -18,8 +18,8 @@ This demonstrates both a **working wireframe prototype** and a **polished final 
 | [Vite](https://vitejs.dev/) | Fast development server & build tool |
 | [React](https://react.dev/) + TypeScript | UI framework with type safety |
 | [TailwindCSS v4](https://tailwindcss.com/) | Utility-first CSS framework |
-| [GSAP](https://greensock.com/gsap/) + ScrollTrigger | Scroll-driven & entrance animations |
-| [Lenis](https://lenis.darkroom.engineering/) | Premium smooth scrolling |
+| [GSAP](https://greensock.com/gsap/) + ScrollTrigger | Scroll-driven entrance & parallax animations |
+| Custom UI/UX | Magnetic Custom Cursor & Button Gravity |
 | [Lucide React](https://lucide.dev/) | Lightweight SVG icon library |
 
 ## 🚀 Local Setup
@@ -71,7 +71,7 @@ src/
 
 ## 🌐 Live Demo
 
-> _Link to hosted URL will be added after deployment._
+> **[https://3cs-assessment-seven.vercel.app/](https://3cs-assessment-seven.vercel.app/)**
 
 ## 📝 License
 
