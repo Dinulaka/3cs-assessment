@@ -57,13 +57,15 @@ export default function Navbar() {
       style={{
         opacity: 0, // GSAP will handle showing it
         background: isWireframe
-          ? 'transparent'
+          ? isScrolled
+            ? '#ffffff'
+            : 'transparent'
           : isScrolled
             ? 'rgba(10, 10, 10, 0.9)'
             : 'transparent',
         backdropFilter: isWireframe ? 'none' : isScrolled ? 'blur(20px)' : 'none',
         borderBottom: isWireframe
-          ? '2px dashed #333'
+          ? isScrolled ? '2px dashed #333' : 'none'
           : isScrolled
             ? '1px solid rgba(255,255,255,0.05)'
             : 'none',
