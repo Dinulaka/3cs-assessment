@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -12,10 +12,13 @@ import ResultSection from './sections/ResultSection';
 import Footer from './sections/Footer';
 
 import CustomCursor from './components/CustomCursor';
+import Preloader from './components/Preloader';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
+  const [isPreloading, setIsPreloading] = useState(true);
+
   useEffect(() => {
     // Enable native smooth scrolling without third-party wheel hijacking
     document.documentElement.style.scrollBehavior = 'smooth';
@@ -36,7 +39,11 @@ export default function App() {
 
   return (
     <>
+      <div className="noise-overlay" />
       <CustomCursor />
+      
+      {isPreloading && <Preloader onComplete={() => setIsPreloading(false)} />}
+      
       <Navbar />
       <ThemeToggle />
       <main style={{ overflowX: 'hidden' }}>
